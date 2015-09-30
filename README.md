@@ -1,2 +1,2 @@
-# cheetahchat
-php chat room
+# CheetahChat
+web-based php javascript chat room
