@@ -16,6 +16,14 @@ $db_file = __DIR__ . '/database.db';
 
 
 
+/**
+ * replacements values
+ */
+$replacements = array(
+	':)' => '&#9786;',
+	':(' => '&#9785;'
+);
+
 /** 
  * open database
  * @var SQLite3
@@ -117,8 +125,12 @@ if (isset($_GET['action'])) {
 		 * send message
 		 */
 		case 'send':
-			if (isset($_GET['name']) && empty($_GET['name']) === false && isset($_GET['message']) && empty($_GET['message']) === false)
-				$db->exec('INSERT INTO chats (name, message, time) VALUES ("' . $db->escapeString(htmlspecialchars($_GET['name'])) . '", "' . $db->escapeString(htmlspecialchars($_GET['message'])) . '", strftime("%s", "now"))');
+			if (isset($_GET['name']) && empty($_GET['name']) === false && isset($_GET['message']) && empty($_GET['message']) === false) {
+				$_GET['message'] = htmlspecialchars($_GET['message']);
+				$_GET['message'] = str_replace(array_keys($replacements), array_values($replacements), $_GET['message']);
+
+				$db->exec('INSERT INTO chats (name, message, time) VALUES ("' . $db->escapeString(htmlspecialchars($_GET['name'])) . '", "' . $db->escapeString($_GET['message']) . '", strftime("%s", "now"))');
+			}
 			break;
 	}
 
