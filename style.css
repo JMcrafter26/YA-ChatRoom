@@ -107,3 +107,7 @@ footer {
 footer:hover {
 	opacity: 1;
 }
+
+.text-red {
+	color: #dd0000;
+}
