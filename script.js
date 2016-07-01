@@ -25,7 +25,9 @@ function users(){
 
 		$(window).resize();
 		setTimeout(function(){ users(); }, 10000);
-	});
+	}).fail(function(){
+		$("section ul").append("<li class=\"text-red\"><strong>Error:</strong> Could not retrieve users list.</li>");
+	});;
 }
 
 function chats(){
@@ -45,7 +47,10 @@ function chats(){
 		$("section").attr("data-last", last).animate({ scrollTop: $(document).height() }, "slow");
 
 		$(window).resize();
+
 		setTimeout(function(){ chats()}, 2500);
+	}).fail(function(){
+		$("section ul").append("<li class=\"text-red\"><strong>Error:</strong> Could not retrieve chats.</li>");
 	});
 }
 
