@@ -1,0 +1,228 @@
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    color: #ffffff;
+    font-size: 1.125rem;
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: url(polygon-background.png), -webkit-linear-gradient(20deg, #6D1AF3, #51D0EF);
+    background-image: url(polygon-background.png), linear-gradient(20deg, #6D1AF3, #51D0EF);
+}
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+p {
+    display: inline-block;
+    margin: 0 20px;
+}
+
+h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.container {
+    position: absolute;
+    top: 10%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.logo-text {
+    font-size: 6rem;
+    font-weight: bold;
+    display: block;
+    margin: 0 0 30px;
+    text-transform: uppercase;
+}
+
+.logo-text span {
+    color: #52b3d9;
+}
+
+.shields {
+    margin-bottom: 40px;
+}
+
+.shields .shields-row {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.smaller {
+    font-size: 75%;
+}
+
+.btn {
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    padding: 12px 15px;
+    font-size: 15px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    background: #fff;
+    color: #5396ED;
+    font-weight: 600;
+    transform: translateZ(0);
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+    -webkit-transition: background 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.5);
+    -webkit-box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.btn:hover {
+    transform: translateZ(0);
+    font-weight: 600;
+    color: #5396ED;
+    background: #fff;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+    -webkit-transition: background 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 0 0 7px rgba(255, 255, 255, 0.5);
+    -webkit-box-shadow: 0 0 0 7px rgba(255, 255, 255, 0.5);
+}
+
+.btn small {
+    font-size: 65%;
+    display: block;
+}
+
+.btn.btn-bottom {
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+}
+
+.btn-invert {
+    box-shadow: 0 0 0;
+    background: transparent;
+}
+
+input[type="submit"] {
+    color: #ffffff;
+    background: none;
+    outline: 0;
+    font-family: inherit;
+}
+
+.section {
+    display: block;
+    margin-bottom: 75px;
+}
+
+.section .btn {
+    margin: 20px 10px 0;
+    min-width: 250px;
+}
+
+.copyright p {
+    display: block;
+}
+
+.link-underline {
+    text-decoration: underline;
+}
+
+.corner-ribbon {
+    width: 300px;
+    background: #ffffff;
+    position: absolute;
+    top: 25px;
+    left: -50px;
+    text-align: center;
+    line-height: 50px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #5396ED;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    cursor: pointer;
+}
+
+.corner-ribbon:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.corner-ribbon.top-left {
+    top: 50px;
+    left: -70px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.iconcaptcha-widget {
+    margin: 20px auto !important;
+}
+
+.message {
+    text-transform: uppercase;
+}
+
+.themes {
+    width: 200px;
+    margin: 60px auto 0;
+    display: block;
+    overflow: hidden;
+    font-weight: bold;
+}
+
+.themes .theme {
+    width: 100px;
+    height: 80px;
+    float: left;
+}
+
+.themes .theme span:last-child {
+    font-size: 12px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.themes .theme span:first-child {
+    border-radius: 100%;
+    position: relative;
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: opacity .1s ease;
+}
+
+.themes .theme span:first-child:hover {
+    opacity: 0.8;
+    transition: opacity .1s ease;
+}
+
+.themes .theme--light span:first-child {
+    background: #fafafa;
+    border: 3px solid #f1f1f1;
+}
+
+.themes .theme--dark span:first-child {
+    background: #4c4c4c;
+    border: 3px solid #454545;
+}

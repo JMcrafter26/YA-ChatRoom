@@ -1,0 +1,7 @@
+{
+    "wrong_icon": "Yanlış resmi seçtiniz.",
+    "no_selection": "Hiçbir resim seçilmedi.",
+    "empty_form": "Herhangi bir form göndermediniz.",
+    "invalid_id": "Captcha çözülmedi veya ID geçersizdi.",
+    "form_token": "Form token geçersizdi."
+    }

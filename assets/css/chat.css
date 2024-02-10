@@ -1,0 +1,70 @@
+.fis {
+    margin-left: 5px;
+    vertical-align: middle;
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
+.status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 7px;
+    margin-top: 7px;
+}
+
+.online {
+    background-color: #2ecc71;
+}
+
+.offline {
+    background-color: #e74c3c;
+}
+
+.busy {
+    background-color: #e67e22;
+}
+
+.unknown {
+    background-color: #95a5a6;
+}
+
+.message-hidden {
+    display: none !important;
+}
+
+.spam-message {
+    /* bootstrap danger-emphasis color */
+    opacity: 0.5;
+    color: var(--bs-secondary);
+    transition: opacity 0.5s;
+}
+
+.spam-message:hover {
+    opacity: 1;
+}
+
+
+img.thumbnail.thumbnail-hover {
+    /* stay on top of other elements */
+    z-index: 999;
+    /* make the image bigger */
+    transform: scale(2);
+
+    /* smooth transition */
+    transition: transform 0.5s;
+}
+
+img.thumbnail.thumbnail-left:hover {
+    /* image needs to be more to the left */
+    margin-left: -50%;
+    transition: transform 0.5s, margin-left 0.5s;
+}
+
+img.thumbnail.thumbnail-right:hover {
+    /* image needs to be more to the right */
+    margin-left: 50%;
+    transition: transform 0.5s, margin-left 0.5s;
+}

@@ -1,0 +1,3 @@
+RewriteEngine On
+# Rewrite all requests to get.php. Set the path to $_GET['lang'].
+RewriteRule ^(.*)$ get.php?lang=$1 [L,QSA]

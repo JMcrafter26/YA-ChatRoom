@@ -1,0 +1,68 @@
+# Keywords blacklist for "php-spam-filter"
+# Any regular expression syntax can be used here
+# 	(without the delimiters)
+# All keywords are case insensitive.
+# Lines starting with '#' are ignored.
+
+# A few of these are on the verge of being classified as "merchendise",
+# but I'm sorting the best that I can. Remember that you can always
+# disble some keywords by prefixing them with the `#` character.
+
+(cash|car|personal) loan
+cars? for sale
+7 Seater Car
+credit repair
+pay day loan
+365DayLoan
+home (phone|broadband)
+no win no fee
+horse racing
+(currency|money) transfer
+alternatefuel
+online dating
+reverse phone lookup
+cash advance
+online divorce
+divorce on line
+ppi claims
+hotels cheap
+(london|usa) (hotels?|spas?)
+electricity prices
+lottery results
+GScraper
+buy (youtube|twitter)
+(online|interracial|free) dating
+market lodge
+Make Me a Millionaire
+Car rental
+Cheap flights
+XLgirls
+cash for cars
+escorts? (in|of)? (Napoli|Milano|Dubai|Roma|Shanghai|Russian?)
+(Napoli|Milano|Dubai|Roma|Shanghai|Russian?) escorts?
+travel accommodation
+free job search
+paydayz
+make money
+marketing (manager|maneger|online)
+webcam chat
+Sexcam
+telecharger
+shore (tours|excursions)
+
+home security
+(criminal|defense|family) lawyer
+(car|life|building) insurance
+(accident|injury|compensation) claims?
+(plumbers?|lawyers?|locksmiths?|storage|repairs?|pest control|electricians?|accountants?|solicitors?) (in)? (north|east|south|west)? (london|vancouver|ottowa|toronto|Mississauga|sydney|Melbourne)
+(debt|financial) (consolidation|relief|advice|management|counselling)
+personal injury solicitor
+credit services
+cash review
+
+# Not English
+(voyance|rune|horoscope|tarot) gratuite?
+mujeres solteras
+
+
+

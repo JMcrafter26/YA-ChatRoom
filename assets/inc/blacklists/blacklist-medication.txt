@@ -1,0 +1,241 @@
+viagra
+cialis
+propecia
+zoloft
+clomid
+ambien
+kamagra
+accutane
+sildenafil
+doxorubicin
+levitra
+strattera
+zithromax
+topamax
+priligy
+vivaxa
+vimax
+triactol
+fioricet
+deltasone
+menozac
+profollica
+Metronidazole
+retin a
+lasix
+tadalafil
+valium
+vigrx
+Capsiplex
+zantac
+stendra
+extenze
+semenax
+vardenafil
+imitrex
+Nizoral
+Natox
+vimax
+flagyl
+Garcinia cambogia
+Zeta clear
+acne treatment
+volume pills
+SizeGenetics
+eye secrets
+tramadol
+imitrex
+amoxil
+zovirax
+proactol
+pro solution
+dapoxetine
+vigorelle
+cytotec
+Meratol
+raspberry ketone
+modafinil
+penis enlargement
+enlargement pills
+breast actives
+male extra
+male edge
+GenF20
+human growth hormone
+Nuratrim
+Phen 375
+volume pills
+anti aging
+hair loss
+Har Vokse
+Clear Skin Max
+hide my ass
+Garcinia
+cambogia
+Ativan
+Champix
+klonopin
+Amlodipine
+xanax
+breast enhancement
+Levofloxaxin
+ciprofloxacin
+renova
+Synthroid
+Reductil
+Venapro
+orlistat
+nolvadex
+clonazepam
+prozac
+weight (gain|loss)
+fat loss
+Meridia
+oxycodone
+ClearPores
+JesExtender
+penis health
+diet (patch|review)
+(menu|zone|acai|mango|atkins) diet
+Provigil
+MaleEdge
+HerSolution
+Provestra
+Lunesta
+Proextender
+Provacyl
+ProShapeRX
+Norvasc
+Kollagen Intensiv
+dermaperfect
+VP-?RX
+Zyrtec
+Sudafed
+Maxoderm
+Finasteride
+Seroquel
+rhinoplasty
+liposuction
+breastreduction
+hairremoval
+breastlift
+Nexus Pheromones
+Rejuvenex
+Man XXX
+dermapure
+Eye cream
+Revitol
+Volumizer
+Poraso
+Phenergan
+Butalbital
+Cococleanse
+Proactiv
+Acai
+Enhance XL
+Ilosone
+Acne treatment
+DermaVeratrol
+Albenza
+Asacol
+Bath Mate
+Penis pump
+Finpecia
+Virility (Max|pills)
+Alprazolam
+Xanex
+Tinnitus Control
+dilaudid
+Barbadensis
+Gymnema sylvestre
+Plantar Fasciitis
+Ibuprofen
+Erythromycin
+Methotrexate
+Amantadine
+Sulfameth
+Trimethoprim
+Crestor
+Digoxin
+Bupropion
+Rogaine
+Codeine
+Augmentin
+Mefenamic Acid
+Ulcerative
+Oxycontin
+Mysoline
+Premarin
+Effexor
+Celebrex
+Mobic
+Confido
+Percocet
+Confido
+Clarisonic
+Allegra
+Ofloxacin
+Paxil
+Cipro
+Diuretic
+Antidep
+Oflox
+Metoprolol
+Ventolin
+Clopidogrel
+Proxen
+Ofloxacin
+Paxil
+Cipro
+Diuretic
+Oflox
+Clopidogrel
+Procera
+Cefixime
+Albendazole
+Aerolin
+Amecladin
+Atomoxetine
+Claritin
+Aponal
+Cravit
+Covera
+Acticin
+Cefixime
+Abilify
+Carbolit
+Cytoxan
+Clopilet
+Diclofenac
+Citalopram
+Differin
+Capecitabine
+Calcitriol
+low carb (meal|diet|recipe|food|cheesecake|breakfast|lunch)
+
+no perscription
+online pharmacy
+pharmacima.us
+nantes-chercheur.org #Oriental medicine
+
+last longer in bed
+
+# I'm guessing these are considered "organic medication"
+green coffee (bean )?extract
+
+# I got tired of making these elaborate "catches" for the HGH spam, so I just blocked the use of the word HGH et al at all!
+#(hgh|hcg|tmj) (recipes|vitamins|drops|diet|ingredients|suppliments|supplements|gold|platinum|hormone|calculator|weight|studies|legal)
+#(best|natural) (hgc|hgh)
+
+# The \W flag is to make sure these three letter combinations aren't inside of another word.
+# For instance, without the flag, "HGH" would be matched in a "harmless" word such as "witcHGHost"
+\Whgh
+\Whcg
+\Wtmj
+
+
+# Not English
+dietas para bajar #Weight loss
+
+
+

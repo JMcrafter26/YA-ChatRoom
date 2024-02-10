@@ -1,0 +1,7 @@
+{
+    "wrong_icon": "U heeft het verkeerde beeld geselecteerd.",
+    "no_selection": "Er is geen afbeelding geselecteerd.",
+    "empty_form": "U heeft geen formulier ingediend.",
+    "invalid_id": "De captcha is niet opgelost of de ID was ongeldig.",
+    "form_token": "De formuliertoken was ongeldig."
+    }
