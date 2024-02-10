@@ -1,12 +1,4 @@
 <?php
-
-
-/**
- * CheetahChat 1.0b
- * simple php chat room
- * Hamid Reza Samak
- * https://github.com/hamidsamak/cheetahchat
- */
 require_once 'config.php';
 
 
