@@ -1,5 +1,5 @@
 <?php
-
+// Please note that this file is not secure and should not be used in a production environment
 
 header('Content-Type: application/json');
 
@@ -12,7 +12,9 @@ if (!isset($lang)) {
 
 // remove .json from the language
 $lang = str_replace('.json', '', $lang);
-
+$lang = str_replace('/', '', $lang);
+$lang = str_replace('..', '', $lang);
+$lang = str_replace('\\', '', $lang);
 // get the language file
 $translationFile = file_get_contents('./' . $lang . '.json');
 if ($translationFile === false) {
