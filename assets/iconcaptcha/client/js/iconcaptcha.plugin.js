@@ -104,23 +104,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
+    var translation;
     // check if the translation file is already saved in localStorage
     if (localStorage.getItem('iconCaptchaTranslation')) {
         // initialize IconCaptcha with the translation file from localStorage
         log('Found translation file in localStorage: ' + localStorage.getItem('iconCaptchaTranslation'));
-        var translation = JSON.parse(localStorage.getItem('iconCaptchaTranslation'));
+         translation = JSON.parse(localStorage.getItem('iconCaptchaTranslation'));
+
+         
+    log('translation: ' + translation);
+
+    // initialize IconCaptcha
+    IC_settings.locale = translation;
+        $('.iconcaptcha-widget').iconCaptcha(IC_settings);
     } else {
         log('Translation file not found in localStorage. Getting url: ' + 'https://api.jm26.net/icon-captcha/v1/assets/translations/' + userLangShort + '.json');
-    }
+    
     // get the translation file from the server
-    $.getJSON('https://api.jm26.net/icon-captcha/v1/assets/translations/' + userLangShort + '.json').done(function (data) {
+    $.getJSON('./assets/iconcaptcha/translations/get.php?lang=' + userLangShort).done(function (data) {
         // initialize IconCaptcha with the translation file
         log('Found translation file for ' + userLangShort + '.json');
-        var translation = data;
+        translation = data;
 
 // save the translation file to localStorage
         localStorage.setItem('iconCaptchaTranslation', JSON.stringify(data));
+
+
+        
+    log('translation: ' + translation);
+
+    // initialize IconCaptcha
+    IC_settings.locale = translation;
+        $('.iconcaptcha-widget').iconCaptcha(IC_settings);
     }).fail(function () {
         // if the translation file is not found, initialize IconCaptcha with the default translation file
         log('Translation file for ' + userLangShort + '.json not found: ');
@@ -141,8 +156,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
     });
+    }
 
-    // initialize IconCaptcha
-    IC_settings.locale = translation;
-        $('.iconcaptcha-widget').iconCaptcha(IC_settings);
 });

@@ -1,0 +1,16 @@
+{
+  "initialization": {
+    "verify": "Je ne suis pas un robot",
+    "loading": "Chargement du défi en cours..."
+  },
+  "header": "Sélectionnez l'image qui est affichée le <u>moins<\/u> de fois",
+  "correct": "Vérification réussie.",
+  "incorrect": {
+    "title": "Oh non.",
+    "subtitle": "Vous avez sélectionné la mauvaise image."
+  },
+  "timeout": {
+    "title": "Veuillez patienter 60 secondes.",
+    "subtitle": "Vous avez effectué trop de sélections incorrectes."
+  }
+}

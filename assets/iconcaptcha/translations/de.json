@@ -1,0 +1,16 @@
+{
+    "initialization": {
+        "verify": "Ich bin kein Roboter",
+        "loading": "Lade Test..."
+    },
+    "header": "Wählen Sie das Bild aus, das am <u>wenigsten</u> vorkommt.",
+    "correct": "Verifizierung erfolgreich.",
+    "incorrect": {
+        "title": "Oh je.",
+        "subtitle": "Sie haben das falsche Bild ausgewählt."
+    },
+    "timeout": {
+        "title": "Bitte warten Sie 60 Sek.",
+        "subtitle": "Sie haben zu viele falsche Auswahlen getroffen."
+    }
+}

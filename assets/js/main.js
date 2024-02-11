@@ -46,6 +46,14 @@ function loadData() {
         $('#yourStatus').removeClass('bg-warning');
         $('#yourStatus').addClass('bg-success');
     }
+    if (window.lastFocus == undefined || window.lastFocus == null) {
+        window.lastFocus = Math.floor(Date.now() / 1000);
+    }
+    if (document.hasFocus()) {
+        window.lastFocus = Math.floor(Date.now() / 1000);
+    }
+    console.log('Last focus: ' + window.lastFocus + ' (seconds ago: ' + (Math.floor(Date.now() / 1000) - window.lastFocus) + ')');
+
     $.ajax({
         url: 'api.php',
         type: 'GET',
@@ -176,19 +184,36 @@ function loadData() {
                     var scrollToBottom = false;
                 }
 
-                //
+                // favicon count (unread messages)
+                var unread = 0;
 
                 $.each(data.data.chats, function(index, message) {
-
+                                            // if data.spam is 1, and the user has hideSpamMessages enabled, add invisible class
+                        var spamClass = '';
+                        var spamClassData = false;
+                        if (message.spam == true && getFromStorage('hideSpamMessages') == true) {
+                            spamClass = 'd-none spam-message';
+                            spamClassData = true;
+                        } else if (message.spam == true) {
+                            spamClass = 'spam-message';
+                            spamClassData = true;
+                        } else {
+                            spamClass = '';
+                            spamClassData = false;
+                        }
+                    // if focus is false, and the user didn't read the message, add to unread
+                    if (!focus && message.time > window.lastFocus && spamClassData == false) {
+                        unread++;
+                    }
                     // check if message is already in the list, if so, skip it
                     if ($('li[data-hash="' + message.hash + '"]').length > 0) {
-
                         return;
                     }
 
                     // sanitize the data using DOMPurify
                     message.name = DOMPurify.sanitize(message.name);
                     message.message = DOMPurify.sanitize(message.message);
+
 
 
 
@@ -238,19 +263,7 @@ function loadData() {
                         }
 
 
-                        // if data.spam is 1, and the user has hideSpamMessages enabled, add invisible class
-                        var spamClass = '';
-                        var spamClassData = false;
-                        if (message.spam == true && getFromStorage('hideSpamMessages') == true) {
-                            spamClass = 'd-none spam-message';
-                            spamClassData = true;
-                        } else if (message.spam == true) {
-                            spamClass = 'spam-message';
-                            spamClassData = true;
-                        } else {
-                            spamClass = '';
-                            spamClassData = false;
-                        }
+
                         // console.log('spam: ' + message.message);
                         document.getElementById('spamCount').innerText = parseInt(document.getElementById('spamCount').innerText) + 1;
 
@@ -308,6 +321,18 @@ function loadData() {
                     $('#messages').scrollTop(scrollPos);
                 }
                 $('#captchaModal').modal('hide');
+
+                // if focus is false, set the favicon count
+                console.log('unread: ' + unread);
+                if (!focus) {
+                    if (unread > 0) {
+                        setFaviconCount(unread);
+                    } else {
+                        setFaviconCount('');
+                    }
+                } else {
+                    setFaviconCount('');
+                }
 
 
             } else {
@@ -513,13 +538,13 @@ function updateActivity(loop = false) {
         if (loop) {
             setTimeout(function() {
                 updateActivity(true);
-            }, 5000);
+            }, window.config.fetchInterval);
         }
     } else {
         if (loop) {
             setTimeout(function() {
                 updateActivity(true);
-            }, 30000);
+            }, window.config.backgroundFetchInterval);
         }
     }
 }
@@ -645,12 +670,12 @@ console.log('loading themes');
         if (key == 0 || key == 1) {
             continue;
         }
-        var thumbnail = './assets/theme-thumbnail/' + theme + '/' + value.name + '.png';
+        var thumbnail = './assets/theme-thumbnail/' + theme + '/' + value.name.toLowerCase() + '.png';
         var li = document.createElement('div');
         li.className = 'card m-1';
         li.dataset.theme = value.url;
         li.style = 'width: 15rem;';
-        li.innerHTML = `<img class="card-img-top thumbnail" alt="${value.name}" src="${thumbnail}" style="height: 10rem; object-fit: cover;" onclick="window.open('${thumbnail}', '_blank')">
+        li.innerHTML = `<img class="card-img-top lazyload thumbnail" alt="${value.name}" src="${thumbnail}" style="height: 10rem; object-fit: cover;" onclick="window.open('${thumbnail}', '_blank')" loading="lazy">
                         <div class="card-body">
                             <h5 class="card-title">${value.name}</h5>
                             <p class="card-text">${value.slogan}</p>
@@ -790,7 +815,33 @@ function runcommands(message) {
     }
 }
 
+function setFaviconCount(count) {
+    console.log('New messages: ' + count);
+
+    // if faviconCount is enabled, set the favicon count
+    if ($('#faviconCountSwitch').is(':checked')) {
+        if (window.favicon == undefined) {
+            window.favicon = new Favico({
+                animation: 'pop'
+            });
+        }
+        if (count > 0) {
+            document.title = '(' + count + ') ' + window.config.title;
+            window.favicon.badge(count);
+        } else {
+            document.title = window.config.title;
+            window.favicon.badge(0);
+        }
+    } else {
+        document.title = window.config.title;
+    }
+}
+
 $('#sendBtn').click(function() {
+
+if(runcommands($('#messageArea').val())) {
+        return;
+    }
     sendMessage();
 });
 
@@ -952,12 +1003,33 @@ $(document).ready(function() {
     // });
 
     // set the dark mode switch
-    // if (loadTheme() == 'dark') {
-    //     $('#darkModeSwitch').prop('checked', true);
-    // }
+    if (loadTheme() == 'dark') {
+         $('#darkModeSwitch').prop('checked', true);
+    }
+
+    // check if settigs are set, if not, run saveSettings to create them
+    if (localStorage.getItem('chat-settings') == null) {
+        saveSettings();
+    }
     
     loadSettings();
     loadBootswatchThemeList();
+
+    if ($('#faviconCountSwitch').is(':checked')) {
+        window.favicon = new Favico({
+            animation : 'popFade'
+        });
+
+        console.log('favicon enabled');
+
+    } else {
+        /* add favicons:
+            <!-- <link rel="icon"  type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png"> -->
+    */
+   $('head').append('<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png">');
+    $('head').append('<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png">');
+    }
 
     convertMemberList();
     updateActivity(true);

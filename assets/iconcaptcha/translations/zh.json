@@ -1,0 +1,16 @@
+{
+  "initialization": {
+    "verify": "我不是机器人",
+    "loading": "加载中..."
+  },
+  "header": "选择显示次数最<u>少<\/u>的图像",
+  "correct": "验证成功。",
+  "incorrect": {
+    "title": "哦，不。",
+    "subtitle": "您选择了错误的图像。"
+  },
+  "timeout": {
+    "title": "请等待60秒。",
+    "subtitle": "您做了太多错误的选择。"
+  }
+}

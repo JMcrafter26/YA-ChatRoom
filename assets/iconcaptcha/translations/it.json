@@ -1,0 +1,16 @@
+{
+  "initialization": {
+    "verify": "Non sono un robot",
+    "loading": "Caricamento in corso..."
+  },
+  "header": "Seleziona l'immagine che viene mostrata il <u>meno<\/u>",
+  "correct": "Verifica avvenuta con successo.",
+  "incorrect": {
+    "title": "Oh, no.",
+    "subtitle": "Hai selezionato l'immagine sbagliata."
+  },
+  "timeout": {
+    "title": "Attendi per favore 60 secondi.",
+    "subtitle": "Hai effettuato troppe selezioni errate."
+  }
+}
