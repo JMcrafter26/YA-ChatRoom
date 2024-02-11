@@ -28,13 +28,15 @@ $error = array(
     <script src="https://api.jm26.net/error-logging/error-log.js" crossorigin="anonymous"></script>
 
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png">
+    <!-- <link rel="icon"  type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png"> -->
     <link rel="manifest" href="./assets/favicon/site.webmanifest">
     <link rel="mask-icon" href="./assets/favicon/safari-pinned-tab.svg" color="#00c6fb">
     <link rel="shortcut icon" href="./assets/favicon/favicon.ico">
     <meta name="msapplication-TileColor" content="#00c6fb">
     <meta name="msapplication-config" content="./assets/favicon/browserconfig.xml">
+    <!-- <link rel="icon" href="https://avatars.githubusercontent.com/u/77780772?v=4" type="image/x-icon"> -->
+
 
     <script>
         function loadTheme() {
@@ -70,6 +72,9 @@ $error = array(
         window.config = {
             token: '<?php echo $_SESSION['token']; ?>',
             name: '<?php echo $_SESSION['name']; ?>',
+            title: '<?php echo $config['title']; ?>',
+            fetchInterval: <?php echo $config['fetchInterval']; ?>,
+            backgroundFetchInterval: <?php echo $config['backgroundFetchInterval']; ?>,
         };
 
         var vh = window.innerHeight * 0.01;
@@ -392,6 +397,12 @@ $error = array(
         </script>
         <script src="https://cdn.jsdelivr.net/gh/cure53/DOMPurify@main/dist/purify.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/ejci/favico.js/favico.min.js"></script>
+        <script>
+            // var favicon = new Favico({
+            //     animation: 'popFade'
+            // });
+            // favicon.badge(10);
+        </script>
 
         <script src="./assets/js/main.js"></script>
 </body>
