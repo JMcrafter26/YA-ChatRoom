@@ -1,0 +1,105 @@
+$(document).ready(function() {
+
+                // insert the email in the contact link if the user clicks the accordion item
+                $('#faq .accordion-item').click(function() {
+                    var email = '%63%6f%6e%74' + '%61%6' + '3%74%40%6a%6d%32%36%2e%6e%65%74';
+                    $('#mail').attr('href', 'mailto:' + email);
+                });
+
+                $('#loginBtn').click(function() {
+                    sendLoginForm();
+                });
+
+
+                $('#loginForm').submit(function(e) {
+                    e.preventDefault();
+                    sendLoginForm();
+                });
+
+
+                function sendLoginForm() {
+                    $('#error').html('');
+                    $('#loginBtn').prop('disabled', true);
+                    $('#loginBtn').html('Logging in <i class="fas fa-circle-notch fa-spin"></i>');
+                    var name = $('#name').val();
+                    var accept = $('#accept').prop('checked');
+                    if (name == '') {
+                        $('#error').html('Please enter your name');
+                        $('#loginBtn').prop('disabled', false);
+                        $('#loginBtn').html('Enter <i class="fas fa-sign-in-alt"></i>');
+                        return;
+                    }
+                    if (!accept) {
+                        $('#error').html('You must accept the Terms of Service and Rules');
+                        $('#loginBtn').prop('disabled', false);
+                        $('#loginBtn').html('Enter <i class="fas fa-sign-in-alt"></i>');
+                        return;
+                    }
+
+                    var code = '';
+                    // get country code from myip and store it in variables
+                    $.ajax({
+                        url: 'https://ipv4.myip.wtf/json',
+                        type: 'GET',
+                        async: false,
+                        success: function(data) {
+                            code = data.country_code;
+
+                            // if code is null, or undefined, get it from the browser language
+                            if (code == null || code == undefined) {
+                                code = window.navigator.language;
+                                code = code.split('-')[1];
+                            }
+                        },
+                        error: function() {
+                            code = window.navigator.language;
+                            code = code.split('-')[1];
+                        }
+                    });
+
+
+
+                    var FormData = {
+                        action: 'login',
+                        name: name,
+                        token: '<?php echo $_SESSION['randomToken']; ?>',
+                        code: code,
+                    };
+                    // convert FormData to a string
+                    FormData = $.param(FormData);
+
+                    <?php if (isset($config['captcha']) && $config['captcha'] == true) { ?>
+                        // serialize the form with id iconCaptchaDiv and add it to FormData
+                        var form = $('#iconCaptchaDiv');
+                        var formData = form.serialize();
+                        console.log(formData);
+                        FormData = FormData + '&' + formData;
+                        console.log(FormData);
+                    <?php } ?>
+
+
+                    $.ajax({
+                        url: 'api.php',
+                        type: 'POST',
+                        data: FormData,
+                        success: function(data) {
+                            if (data.status == 'success') {
+                                window.location.reload();
+                            } else {
+                                if (data.message == 'Invalid token') {
+                                    data.message = 'Invalid token. Please refresh the page';
+                                }
+                                $('#error').html(data.message);
+
+                                $('#loginBtn').prop('disabled', false);
+                                $('#loginBtn').html('Enter <i class="fas fa-sign-in-alt"></i>');
+                            }
+                        },
+                        error: function() {
+                            $('#error').html('An error occurred, please try again later');
+                            $('#loginBtn').prop('disabled', false);
+                            $('#loginBtn').html('Enter <i class="fas fa-sign-in-alt"></i>');
+                        }
+                    });
+                }
+            });

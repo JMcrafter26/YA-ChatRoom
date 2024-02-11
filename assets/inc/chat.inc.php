@@ -123,7 +123,7 @@ $error = array(
                 </div>
                 <!-- Footer -->
                 <footer class="mt-2 text-center text-muted card d-flex justify-content-center align-items-center pt-2 d-none d-lg-block" style="font-size: 0.8rem; height: 8vh;">
-                    &copy; <?php echo date('Y'); ?> <a href="./" class="text-muted"><?php echo $config['title']; ?></a>
+                    &copy; <?php echo date('Y'); ?> <a href="https://go.jm26.net/ya-chatroom" class="text-muted"><?php echo $config['title']; ?></a>
                     <p class="text-muted user-select-none" style="font-size: 0.5rem;">By using this chatroom you agree to our <a href="#" class="text-muted">Terms of Service</a></p>
                 </footer>
             </div>
@@ -220,12 +220,10 @@ $error = array(
                             </div>
                             <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
                                 <p>This is a simple chatroom. It is not secure. Do not share personal information.</p>
-                                <p>Created by <a href="https://jm26.net" target="_blank" rel="noopener noreferrer">jm26</a></p>
-                                <p>Source code on <a href="#" target="_blank" rel="noopener noreferrer">GitHub</a></p>
-
+                                <p>Created by <a href="https://go.jm26.net/github" target="_blank" rel="noopener noreferrer">jm26</a>. <a href="https://jm26.net" target="_blank" rel="noopener noreferrer">Website</a></p>
+                                <p>Source code on <a href="https://go.jm26.net/ya-chatroom" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a></p>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <!-- logout button on the left -->
@@ -404,7 +402,7 @@ $error = array(
             // favicon.badge(10);
         </script>
 
-        <script src="./assets/js/main.js"></script>
+        <script src="./assets/js/main.min.obf.js"></script>
 </body>
 
 </html>
