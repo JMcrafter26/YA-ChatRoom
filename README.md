@@ -23,7 +23,7 @@ This is a chatroom application that allows users to send messages to each other 
 - 📨 Easy to use and maintain chatroom
 - 📡 Real-time messaging
 - ⚙️ Customizable settings
-- 📜 60second history mode
+- 📜 60 second history mode
 - 🛡️ Privacy friendly public chatroom
 - 📱 Responsive design
 - 🎨 Themes
