@@ -201,6 +201,11 @@ $error = array(
                                     <input class="form-check-input" type="checkbox" role="switch" id="faviconCountSwitch" checked>
                                     <label class="form-check-label" for="faviconCountSwitch"><i class="fas fa-eye"></i> Show unread message count in favicon</label>
                                 </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="joinMessagesSwitch" checked>
+                                    <label class="form-check-label" for="joinMessagesSwitch"><i class="fas fa-user-plus"></i> Show join/leave messages</label>
+                                </div>
+
                                 <!-- select bootswatch theme open modal button -->
                                 <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#themeModal" id="themeBtn">Change theme <i class="fas fa-palette"></i></button>
 

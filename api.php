@@ -54,8 +54,8 @@ ini_set('display_errors', 0);
 /**
  * create tables if database is new
  */
-$db->exec('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT NOT NULL, ip TEXT NOT NULL, activity INTEGER NOT NULL, countryCode TEXT NOT NULL, isFocus INTEGER NOT NULL, color TEXT NOT NULL)');
-$db->exec('CREATE TABLE IF NOT EXISTS chats (id INTEGER PRIMARY KEY, name TEXT NOT NULL, message TEXT NOT NULL, time INTEGER NOT NULL, spam INTEGER NOT NULL)');
+$db->exec('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT NOT NULL, ip TEXT NOT NULL, activity INTEGER NOT NULL, countryCode TEXT NOT NULL, isFocused INTEGER NOT NULL, color TEXT NOT NULL)');
+$db->exec('CREATE TABLE IF NOT EXISTS chats (id INTEGER PRIMARY KEY, name TEXT NOT NULL, message TEXT NOT NULL, time INTEGER NOT NULL, spam INTEGER NOT NULL, hash TEXT)');
 
 
 session_start();
@@ -242,25 +242,11 @@ if (isset($_GET['action'])) {
                     die(json_encode($response));
                 }
 
-                // name cannot be one of the reserved names
-                $reservedNames = array(
-                    'admin',
-                    'administrator',
-                    'moderator',
-                    'mod',
-                    'owner',
-                    'bot',
-                    'system',
-                    'server',
-                    'jm26.net',
-                    'creator',
-                    'host',
-                    'jmcrafter26'
-                );
+
                 if (in_array($name, $reservedNames)) {
                     $response = array(
                         'status' => 'error',
-                        'message' => 'Name is reserved'
+                        'message' => 'To prevent impersonation, this name is reserved'
                     );
                     header('Content-Type: application/json');
                     die(json_encode($response));
@@ -333,7 +319,7 @@ if (isset($_GET['action'])) {
                 $color = substr(md5($name . $ip), 0, 6);
 
 
-                $db->exec('INSERT INTO users (name, ip, activity, countryCode, isFocus, color) VALUES ("' . $db->escapeString(htmlspecialchars($name)) . '", "' . $ip . '", strftime("%s", "now"),"' . $countryCode . '", 1, "' . $color . '")');
+                $db->exec('INSERT INTO users (name, ip, activity, countryCode, isFocused, color) VALUES ("' . $db->escapeString(htmlspecialchars($name)) . '", "' . $ip . '", strftime("%s", "now"),"' . $countryCode . '", 1, "' . $color . '")');
                 // check if an error occured
                 if ($db->lastErrorCode() != 0) {
                     $response = array(
@@ -394,16 +380,16 @@ if (isset($_GET['action'])) {
 
             //     // set activity to current time for current user
             //     if (isset($_GET['focus']) && $_GET['focus'] == 'true') {
-            //         $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocus = 1 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
+            //         $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocused = 1 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
             //     } else {
-            //         $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocus = 0 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
+            //         $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocused = 0 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
             //     }
 
             //     $db->exec('DELETE FROM users WHERE strftime("%s", "now") - activity > ' . $config['maxTimeout']);
 
             //     $users = array();
 
-            //     $result = $db->query('SELECT id, name, countryCode, activity, isFocus FROM users ORDER BY activity DESC');
+            //     $result = $db->query('SELECT id, name, countryCode, activity, isFocused FROM users ORDER BY activity DESC');
             //     while ($user = $result->fetchArray(SQLITE3_ASSOC))
             //         $users[] = $user;
 
@@ -447,34 +433,84 @@ if (isset($_GET['action'])) {
 
             //     break;
 
-        case 'all':
+        case 'getChat':
             // get chats and users
             if (isset($_GET['focus']) && $_GET['focus'] == 'true') {
-                $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocus = 1 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
+                $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocused = 1 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
             } else {
-                $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocus = 0 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
+                $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocused = 0 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
             }
 
             $db->exec('DELETE FROM users WHERE strftime("%s", "now") - activity > ' . $config['maxTimeout']);
             $users = array();
 
-            $result = $db->query('SELECT id, name, countryCode, activity, isFocus, color FROM users ORDER BY activity DESC');
-            while ($user = $result->fetchArray(SQLITE3_ASSOC))
+            $result = $db->query('SELECT id, name, countryCode, activity, isFocused, color FROM users ORDER BY activity DESC');
+            while ($user = $result->fetchArray(SQLITE3_ASSOC)) {
+                                    // if (user.isFocused) {
+                    //     if (user.activity < (Math.floor(Date.now() / 1000) - 90)) {
+                    //         status = 'offline';
+                    //     } else {
+                    //         status = 'online';
+                    //     }
+                    // } else {
+                    //     // if user is longer than 90 seconds inactive, he is offline, else he is busy
+                    //     if (user.activity < (Math.floor(Date.now() / 1000) - 90)) {
+                    //         status = 'offline';
+                    //     } else {
+                    //         status = 'busy';
+                    //     }
+                    // }
+                if($user['isFocused'] == true) {
+                    if($user['activity'] < (time() - 90)) {
+                        $user['status'] = 'offline';
+                    } else {
+                        $user['status'] = 'online';
+                    }
+                } else {
+                    if($user['activity'] < (time() - 90)) {
+                        $user['status'] = 'offline';
+                    } else {
+                        $user['status'] = 'busy';
+                    }
+                }
+                unset($user['activity']);
+                unset($user['isFocused']);
                 $users[] = $user;
+            }
 
-            $last = @ceil($_GET['last']);
-
+            $lastHash = $_GET['lastHash'];
+            $lastId = 0;
 
             $chats = array();
-            $db->exec('DELETE FROM chats WHERE strftime("%s", "now") - time > 60');
-            $resultChats = $db->query('SELECT id, name, message, time, spam FROM chats WHERE id > ' . $db->escapeString($last) . ' ORDER BY time');
-            while ($chat = $resultChats->fetchArray(SQLITE3_ASSOC))
+            $db->exec('DELETE FROM chats WHERE strftime("%s", "now") - time > ' . $config['maxMessageAge']);
+            if(isset($_GET['lastHash']) && !empty($_GET['lastHash']) && $_GET['lastHash'] != 0) {
+                // get the id of the chat with the last hash, if it exists
+                $result = $db->query('SELECT id FROM chats WHERE hash = "' . $db->escapeString($lastHash) . '"');
+                $lastId = $result->fetchArray(SQLITE3_ASSOC);
+                if($lastId == false) {
+                    $lastId = 0;
+                } else {
+                $lastId = $lastId['id'];
+                }
+            }
+
+            // die(json_encode($lastId));
+            
+            $resultChats = $db->query('SELECT name, message, time, spam, hash FROM chats WHERE id > ' . $db->escapeString($lastId) . ' ORDER BY time');
+            while ($chat = $resultChats->fetchArray(SQLITE3_ASSOC)) {
+                
+                // echo $chat['name'];
                 $chats[] = $chat;
+            }
+
+
+
+                // die(json_encode($chats));
 
             // for each chat, generate a hash out of it 
-            foreach ($chats as $key => $chat) {
-                $chats[$key]['hash'] = md5($chat['name'] . $chat['message'] . $chat['time']);
-            }
+            // foreach ($chats as $key => $chat) {
+            //     $chats[$key]['hash'] = md5($chat['name'] . $chat['message'] . $chat['time']);
+            // }
 
             // if chat is empty, set it to empty array
             if (empty($chats)) {
@@ -500,8 +536,8 @@ if (isset($_GET['action'])) {
              * send message
              */
         case 'send':
-            if (isset($_SESSION['name']) && empty($_SESSION['name']) === false && isset($_GET['message']) && empty($_GET['message']) === false) {
-                $message = htmlspecialchars($_GET['message']);
+            if (isset($_SESSION['name']) && empty($_SESSION['name']) === false && isset($_POST['message']) && empty($_POST['message']) === false) {
+                $message = htmlspecialchars($_POST['message']);
                 // $message = $_GET['message'];
 
                 // check if message is empty
@@ -597,7 +633,9 @@ if (isset($_GET['action'])) {
 
                 $message = str_replace(array_keys($replacements), array_values($replacements), $message);
 
-                $db->exec('INSERT INTO chats (name, message, time, spam) VALUES ("' . $db->escapeString(htmlspecialchars($_SESSION['name'])) . '", "' . $db->escapeString($message) . '", strftime("%s", "now"), ' . $spam . ')');
+                $hash = md5($_SESSION['name'] . $message . time());
+
+                $db->exec('INSERT INTO chats (name, message, time, spam, hash) VALUES ("' . $db->escapeString(htmlspecialchars($_SESSION['name'])) . '", "' . $db->escapeString($message) . '", strftime("%s", "now"), ' . $spam . ', "' . $hash . '")');
                 // check if an error occured
                 if ($db->lastErrorCode() != 0) {
                     $response = array(

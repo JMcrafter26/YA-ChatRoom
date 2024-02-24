@@ -54,13 +54,18 @@ function loadData() {
     }
     console.log('Last focus: ' + window.lastFocus + ' (seconds ago: ' + (Math.floor(Date.now() / 1000) - window.lastFocus) + ')');
 
+    if (window.lastMsgHash == undefined || window.lastMsgHash == null) {
+        window.lastMsgHash = 0;
+    }
+
     $.ajax({
         url: 'api.php',
         type: 'GET',
         data: {
-            action: 'all',
+            action: 'getChat',
             token: window.config.token,
-            focus: focus
+            focus: focus,
+            lastHash: window.lastMsgHash
         },
         success: function(data) {
             if (data.status == 'success') {
@@ -107,8 +112,12 @@ function loadData() {
                 //     return user.name != window.config.name;
                 // });
 
-                window.users = data.data.users;
+                var newUsers = [];
+                var leftUsers = [];
 
+                if(window.usersList == undefined || window.usersList == null) {
+                    window.usersList = data.data.users;
+                }
 
 
                 $.each(data.data.users, function(index, user) {
@@ -118,21 +127,27 @@ function loadData() {
                         return;
                     }
 
-                    var status = 'unknown';
-                    if (user.isFocus) {
-                        if (user.activity < (Math.floor(Date.now() / 1000) - 90)) {
-                            status = 'offline';
-                        } else {
-                            status = 'online';
-                        }
-                    } else {
-                        // if user is longer than 90 seconds inactive, he is offline, else he is busy
-                        if (user.activity < (Math.floor(Date.now() / 1000) - 90)) {
-                            status = 'offline';
-                        } else {
-                            status = 'busy';
-                        }
+                    // check if there is a new user (user is not in window.users)
+                    if (!window.usersList.some(e => e.name === user.name)) {
+                        newUsers.push(user);
+                        console.log('new user: ' + user.name);
                     }
+
+                    var status = user.status;
+                    // if (user.isFocus) {
+                    //     if (user.activity < (Math.floor(Date.now() / 1000) - 90)) {
+                    //         status = 'offline';
+                    //     } else {
+                    //         status = 'online';
+                    //     }
+                    // } else {
+                    //     // if user is longer than 90 seconds inactive, he is offline, else he is busy
+                    //     if (user.activity < (Math.floor(Date.now() / 1000) - 90)) {
+                    //         status = 'offline';
+                    //     } else {
+                    //         status = 'busy';
+                    //     }
+                    // }
 
                     $('#users').append('<li class="list-group-item d-flex justify-content-between align-items-center"><span class="status ' + status + '"></span><span class="fw-bold">' + user.name + 
                     '<span class="badge" style="background-color: #'+ user.color + '; padding: 3px; margin-left: 2px;" title="#' + user.color + '" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="#' + user.color + '" data-bs-custom-class="tooltip-color-' + user.color + '" >#<span class="d-lg-none">' + user.color + '</span></span>' +
@@ -148,6 +163,7 @@ function loadData() {
                 });
                 $('#userCount').html(data.data.users.length);
                 $('#userCountMobile').html(data.data.users.length);
+                window.usersList = data.data.users;
 
                 // enable tooltips
                 // var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -226,8 +242,8 @@ function loadData() {
 
                     // get message.color from the user list
                     var color = '000000';
-                    console.log(window.users);
-                    $.each(window.users, function(index, user) {
+                    console.log(window.usersList);
+                    $.each(window.usersList, function(index, user) {
                         console.log('user: ' + user.name);
                         console.log('message: ' + message.name);
                         console.log('color: ' + user.color);
@@ -297,6 +313,9 @@ function loadData() {
                         </div>
                     </li>`;
                     $('#messages').append(base);
+
+                    window.lastMsgHash = message.hash;
+                    console.log('lastMsgHash: ' + window.lastMsgHash);
                 });
 
                 if(firstTime) {
@@ -315,6 +334,38 @@ function loadData() {
                 </li>`;
                     $('#messages').append(infoMsg);
                 }
+
+                if(getFromStorage('joinMessages') != true) {
+                    newUsers = [];
+                }
+
+                // if new users are in the list, show a message for each new user
+                $.each(newUsers, function(index, user) {
+                    var userJoinMessage = [
+                        "Welcome to the chat, " + user.name + "!",
+                        "Hello, " + user.name + "!",
+                        "User " + user.name + " has joined the chat!",
+                        "New user " + user.name + " has joined the chat!",
+                        "Welcome, " + user.name + "!",
+                        "User " + user.name + " has entered the chat!",
+                        "A wild " + user.name + " has appeared!",
+                        "User " + user.name + " has arrived!",
+                        "User " + user.name + " has joined!"
+                    ];
+                    userJoinMessage = userJoinMessage[Math.floor(Math.random() * userJoinMessage.length)];
+                    // make username bold
+                    userJoinMessage = userJoinMessage.replace(user.name, '<span class="fw-bold text-info">' + user.name + '</span>');
+                    // append the info message
+                    const infoMsg = `<li class="list-group-item" data-hash="0">
+                    <div class="row">
+                        <div class="col-12 user-select-none">
+                            <p class="mb-0 fw-bold">${userJoinMessage}</p>
+                        </div>
+                    </div>
+                </li>`;
+                    $('#messages').append(infoMsg);
+                });
+                            
 
 
                 // get the new scroll position
@@ -403,7 +454,8 @@ function saveSettings() {
         faviconCount: $('#faviconCountSwitch').is(':checked'),
         sendBusyStatus: $('#sendBusyStatusSwitch').is(':checked'),
         hideSpamMessages: $('#hideSpamSwitch').is(':checked'),
-        hideUrlWarning: !$('#showUrlWarningSwitch').is(':checked')
+        hideUrlWarning: !$('#showUrlWarningSwitch').is(':checked'),
+        joinMessages: $('#joinMessagesSwitch').is(':checked'),
     };
     // merge the settings with the existing settings, update the existing settings
     var existingSettings = JSON.parse(localStorage.getItem('chat-settings'));
@@ -431,6 +483,7 @@ function loadSettings() {
         $('#sendBusyStatusSwitch').prop('checked', settings.sendBusyStatus);
         $('#hideSpamSwitch').prop('checked', settings.hideSpamMessages);
         $('#showUrlWarningSwitch').prop('checked', !settings.hideUrlWarning);
+        $('#joinMessagesSwitch').prop('checked', settings.joinMessages);
     }
 }
 
@@ -464,7 +517,7 @@ function sendMessage() {
     // send message to api
     $.ajax({
         url: 'api.php',
-        type: 'GET',
+        type: 'POST',
         data: {
             message: message,
             action: 'send',

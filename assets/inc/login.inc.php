@@ -335,6 +335,8 @@ if (isset($config['captcha']) && $config['captcha'] == true) {
                                 if (data.message == 'Invalid token') {
                                     data.message = 'Invalid token. Please refresh the page';
                                 }
+                                IconCaptcha.reset();
+
                                 $('#error').html(data.message);
 
                                 $('#loginBtn').prop('disabled', false);
