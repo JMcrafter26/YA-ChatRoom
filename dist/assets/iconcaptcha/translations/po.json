@@ -1,0 +1,16 @@
+{
+  "initialization": {
+    "verify": "Não sou um robô",
+    "loading": "Carregando desafio..."
+  },
+  "header": "Selecione a imagem que é mostrada o <u>menos<\/u> número de vezes",
+  "correct": "Verificação bem-sucedida.",
+  "incorrect": {
+    "title": "Oh, não.",
+    "subtitle": "Você selecionou a imagem errada."
+  },
+  "timeout": {
+    "title": "Aguarde por favor 60 segundos.",
+    "subtitle": "Você fez muitas seleções erradas."
+  }
+}

@@ -1,0 +1,16 @@
+# Keywords blacklist for "php-spam-filter"
+# Any regular expression syntax can be used here
+# 	(without the delimiters)
+# All keywords are case insensitive.
+# Lines starting with '#' are ignored.
+
+showMeTheSecrets
+
+!clear
+!reset
+!reload
+!logout
+!theme
+
+# Emjis
+\/\/frog.gif\/\/

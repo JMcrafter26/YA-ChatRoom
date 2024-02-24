@@ -1,0 +1,7 @@
+{
+    "wrong_icon": "Vous avez sélectionné la mauvaise image.",
+    "no_selection": "Aucune image n'a été sélectionnée.",
+    "empty_form": "Vous n'avez soumis aucun formulaire.",
+    "invalid_id": "Le captcha n'a pas été résolu ou l'ID était invalide.",
+    "form_token": "Le jeton de formulaire était invalide."
+    }

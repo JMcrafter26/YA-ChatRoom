@@ -1,0 +1,7 @@
+{
+    "wrong_icon": "Hai selezionato l'immagine sbagliata.",
+    "no_selection": "Nessuna immagine è stata selezionata.",
+    "empty_form": "Non hai inviato alcun modulo.",
+    "invalid_id": "Il captcha non è stato risolto o l'ID non era valido.",
+    "form_token": "Il token del modulo non era valido."
+    }

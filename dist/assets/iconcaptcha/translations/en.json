@@ -1,0 +1,16 @@
+{
+    "initialization": {
+        "verify": "I am not a robot",
+        "loading": "Loading challenge..."
+    },
+    "header": "Select the image that is shown the <u>least</u> amount of times",
+    "correct": "Verification successful.",
+    "incorrect": {
+        "title": "Oh, no.",
+        "subtitle": "You selected the wrong image."
+    },
+    "timeout": {
+        "title": "Please wait 60 sec.",
+        "subtitle": "You made too many wrong selections."
+    }
+}

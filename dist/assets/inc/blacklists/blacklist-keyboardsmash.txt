@@ -1,0 +1,26 @@
+# Keywords blacklist for "php-spam-filter"
+# Any regular expression syntax can be used here
+# 	(without the delimiters)
+# All keywords are case insensitive.
+# Lines starting with '#' are ignored.
+
+# Common keyboard smashes:
+sadf
+sadf
+asd
+qwe
+sdf
+dfg
+fgh
+ghj
+hjk
+jkl
+zxc
+xvb
+vbn
+bnm
+mnb
+nmm
+mnm
+mnb
+bvn

@@ -1,0 +1,39 @@
+# Keywords blacklist for "php-spam-filter"
+# Any regular expression syntax can be used here
+# 	(without the delimiters)
+# All keywords are case insensitive.
+# Lines starting with '#' are ignored.
+
+(fun|free|online|en ligne|gold|gratuits?|mobile|samsung|casinos?|slots?|paypal)\s*(gambling|texas|casino|black\s?jack|poker|roulette|slots|keno)
+(blackjack|roulette|casino|poker|slot( machine)?) (bonus|online|en ligne|virtuel|betting)
+(video|penny|machine) slots
+slots? (games|card|for fun|machine|online)
+(vegas|lake|island|nouveau|swiss|bovada|betway|batway|ladbrokes|europa|royale|monte carlo|valley|emerald queen|park) (casino|poker)
+32\s*red
+pokerstars
+william hill
+ladbrokes
+888\s?(poker|casino|game|sport|ladies)
+topaze?
+casino (travel|europ|game|bonus)
+spin palace
+tropezia
+euroking
+casino crown
+pokies
+
+(chat|live|online|russian)\s?roulette
+(Xhamster|spicy)\s?roulette
+
+# Non-English
+machine a sous
+speelautom(aten|aat)
+spielautom(aten|aat)
+fruitautom(aten|aat)
+casino (en ligne|en linea|gratuit)
+(spela|svenska|spiel in|spiele?) casino
+spielen? kostenlos?
+(casino|kostenlos?) spielen?
+jeux gratuit
+
+

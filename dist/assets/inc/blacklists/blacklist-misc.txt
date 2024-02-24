@@ -1,0 +1,42 @@
+# Keywords blacklist for "php-spam-filter"
+# Any regular expression syntax can be used here
+# 	(without the delimiters)
+# All keywords are case insensitive.
+# Lines starting with '#' are ignored.
+
+# Lots of spammy
+#https?:\/\/[^\/]+\.pl
+https?:\/\/[^\/]+\.pl\/\S+,s,\d{2,8}\/
+https?:\/\/[^\/]+\.pl\/\S*\?p=\d{2,8}
+
+# More spammy
+<a href="[^"]*">Slots<\/a>
+<a href="[^"]*">Casino<\/a>
+<a href="[^"]*">HGH<\/a>
+
+# Ends each letter with a "footer" of their URL repeated twice
+(http:\/\/([^\s]+))\s(\1)$
+
+rarnewy@gmail.com
+
+# Fake email addresses
+@{gmail\|hotmail\|aol\.com
+dsaf\*@gmail\.com
+gyggjdtfz@gmail\.com
+
+# Matches fake email addresses like '**wmmw**@gmail.com'
+\*[^@']+@[^\.]+\.com
+[^@']+\*@[^\.]+\.com
+
+# This is literally the entire comment they leave.
+# Oh well, it makes my job easier.
+X\?h
+
+# The name used by one Singaporian spambot
+Bexneultynunk
+
+# Why would this appear as the URL for so many spamz?
+http:\/\/cnn\.com
+
+test$
+

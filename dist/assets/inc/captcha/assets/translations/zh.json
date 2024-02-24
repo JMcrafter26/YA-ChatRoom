@@ -1,0 +1,7 @@
+{
+    "wrong_icon": "您选择了错误的图像。",
+    "no_selection": "未选择任何图像。",
+    "empty_form": "您尚未提交任何表单。",
+    "invalid_id": "验证码未解决或ID无效。",
+    "form_token": "表单令牌无效。"
+    }

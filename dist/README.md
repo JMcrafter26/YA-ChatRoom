@@ -1,5 +1,5 @@
-# Work still in progress
+# Important
 
-For now, please use the `src` directory instead of the `dist` directory.
+Set the folder permissions of `asstest/inc/` to `770` (No read, write, execute for others) so its contents are not accessible from the web.
 
-Do not use the `src` for production, as it is not optimized for production and my contain errors and security vulnerabilities.
+**BUT** make sure that the rest `asstest/` folder is still accessible to the web server.
