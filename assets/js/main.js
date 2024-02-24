@@ -119,6 +119,13 @@ function loadData() {
                     window.usersList = data.data.users;
                 }
 
+                // check if a user is no longer in the list (user is in window.users but not in data.data.users)
+                $.each(window.usersList, function(index, user) {
+                    if (!data.data.users.some(e => e.name === user.name)) {
+                        leftUsers.push(user);
+                        console.log('left user: ' + user.name);
+                    }
+                });
 
                 $.each(data.data.users, function(index, user) {
                     // if user is you, skip it
@@ -132,6 +139,7 @@ function loadData() {
                         newUsers.push(user);
                         console.log('new user: ' + user.name);
                     }
+
 
                     var status = user.status;
                     // if (user.isFocus) {
@@ -337,6 +345,7 @@ function loadData() {
 
                 if(getFromStorage('joinMessages') != true) {
                     newUsers = [];
+                    leftUsers = [];
                 }
 
                 // if new users are in the list, show a message for each new user
@@ -353,13 +362,57 @@ function loadData() {
                         "User " + user.name + " has joined!"
                     ];
                     userJoinMessage = userJoinMessage[Math.floor(Math.random() * userJoinMessage.length)];
-                    // make username bold
                     userJoinMessage = userJoinMessage.replace(user.name, '<span class="fw-bold text-info">' + user.name + '</span>');
+                    
+                    // if user is someone26, show a special message
+                    if (user.name == 'someone26') {
+                        // add custom css to the page
+                        var style = document.createElement('style');
+                        style.type = 'text/css';
+                        style.innerHTML = `
+                        .textcontainer{padding:20px 0;text-align:center}.particletext{text-align:center;font-size:24px;position:relative;&.bubbles{>.particle{opacity:0;position:absolute;background-color:rgba(33,150,243,.5);animation:bubbles 3s ease-in infinite;border-radius:100%}}&.confetti{>.particle{opacity:0;position:absolute;animation:confetti 3s ease-in infinite;&.c1{background-color:rgba(76,175,80,.5)}&.c2{background-color:rgba(156,39,176,.5)}}}}@keyframes confetti{0%{opacity:0;transform:translateY(0%) rotate(0deg)}10%{opacity:1}35%{transform:translateY(-800%) rotate(270deg)}80%{opacity:1}100%{opacity:0;transform:translateY(2000%) rotate(1440deg)}}
+                        `;
+                        document.getElementsByTagName('head')[0].appendChild(style);
+
+                        userJoinMessage = '<div class="textcontainer"><span class="particletext confetti">Someone26</span></div>' + ' has joined the chat!';
+
+                    }
+                    // make username bold
                     // append the info message
                     const infoMsg = `<li class="list-group-item" data-hash="0">
                     <div class="row">
                         <div class="col-12 user-select-none">
                             <p class="mb-0 fw-bold">${userJoinMessage}</p>
+                        </div>
+                    </div>
+                </li>`;
+                    $('#messages').append(infoMsg);
+                    if (user.name == 'someone26') {
+                        confetti();
+                    }
+
+                });
+
+                // if left users are in the list, show a message for each left user
+                $.each(leftUsers, function(index, user) {
+                    var userLeftMessage = [
+                        user.name + " has left the chat!",
+                        user.name + " has left!",
+                        "User " + user.name + " has left the chat!",
+                        "We lost " + user.name + "!",
+                        user.name + " disappeared!",
+                        user.name + " seems to be gone!",
+                        user.name + " said goodbye!",
+                        user.name + " has left us!"
+                    ];
+                    userLeftMessage = userLeftMessage[Math.floor(Math.random() * userLeftMessage.length)];
+                    // make username bold
+                    userLeftMessage = userLeftMessage.replace(user.name, '<span class="fw-bold text-danger">' + user.name + '</span>');
+                    // append the info message
+                    const infoMsg = `<li class="list-group-item" data-hash="0">
+                    <div class="row">
+                        <div class="col-12 user-select-none">
+                            <p class="mb-0 fw-bold">${userLeftMessage}</p>
                         </div>
                     </div>
                 </li>`;
@@ -894,6 +947,21 @@ function setFaviconCount(count) {
         document.title = window.config.title;
     }
 }
+
+function confetti() {
+    $.each($(".particletext.confetti"), function(){
+       var confetticount = ($(this).width()/50)*10;
+       for(var i = 0; i <= confetticount; i++) {
+          $(this).append('<span class="particle c' + $.rnd(1,2) + '" style="top:' + $.rnd(10,50) + '%; left:' + $.rnd(0,100) + '%;width:' + $.rnd(6,8) + 'px; height:' + $.rnd(3,4) + 'px;animation-delay: ' + ($.rnd(0,30)/10) + 's;"></span>');
+       }
+    });
+ }
+ 
+ jQuery.rnd = function(m,n) {
+       m = parseInt(m);
+       n = parseInt(n);
+       return Math.floor( Math.random() * (n - m + 1) ) + m;
+ }
 
 $('#sendBtn').click(function() {
 

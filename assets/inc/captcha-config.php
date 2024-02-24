@@ -45,14 +45,14 @@ return [
         // Specifies the connection details for database session driver.
         // Alternatively, you can use an existing PDO object for the 'connection' key.
         // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Database-Storage
-        'connection' => [
-            //'url' => 'mysql:host=127.0.0.1;port=3306;dbname=db', // You can use a DSN URL if your database requires a more complex connection.
-            'host' => '127.0.0.1',
-            'port' => 3306,
-            'database' => 'db',
-            'username' => 'root',
-            'password' => '',
-        ],
+        // 'connection' => [
+        //     //'url' => 'mysql:host=127.0.0.1;port=3306;dbname=db', // You can use a DSN URL if your database requires a more complex connection.
+        //     'host' => '127.0.0.1',
+        //     'port' => 3306,
+        //     'database' => 'db',
+        //     'username' => 'root',
+        //     'password' => '',
+        // ],
         // Specifies the format used to create formatted datetime values to use in database queries.
         // Use a different format if needed for your database. See https://www.php.net/manual/en/datetime.format.php.
         'datetimeFormat' => 'Y-m-d H:i:s',
