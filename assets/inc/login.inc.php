@@ -283,6 +283,7 @@ if (isset($config['captcha']) && $config['captcha'] == true) {
                     }
 
                     var code = '';
+                    <?php if (isset($config['countryFlags']) && $config['countryFlags'] == true) { ?>
                     // get country code from myip and store it in variables
                     $.ajax({
                         url: 'https://ipv4.myip.wtf/json',
@@ -302,8 +303,7 @@ if (isset($config['captcha']) && $config['captcha'] == true) {
                             code = code.split('-')[1];
                         }
                     });
-
-
+                    <?php } ?>
 
                     var FormData = {
                         action: 'login',

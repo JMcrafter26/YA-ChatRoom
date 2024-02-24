@@ -277,13 +277,19 @@ if (isset($_GET['action'])) {
                 }
 
 
-                if (!isset($_GET['code']) || empty($_GET['code'])) {
+                if (!isset($_GET['code']) || empty($_GET['code']) && $config['countryFlags'] == true) {
                     $response = array(
                         'status' => 'error',
                         'message' => 'Invalid ip or country code'
                     );
                     header('Content-Type: application/json');
                     die(json_encode($response));
+                }
+
+                if ($config['countryFlags'] == true) {
+                    $countryCode = $_GET['code'];
+                } else {
+                    $countryCode = 'XX';
                 }
 
                 // while ($break === false) {
@@ -310,7 +316,6 @@ if (isset($_GET['action'])) {
 
                 // get country code from useragent
                 // $countryCode = substr($_SERVER['HTTP_USER_AGENT'], -2);
-                $countryCode = $_GET['code'];
 
                 // generate a color code from the name and the ip of the user
                 $color = substr(md5($name . $ip), 0, 6);
