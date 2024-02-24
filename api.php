@@ -171,6 +171,15 @@ if (isset($_GET['action'])) {
                 // lowercase name
                 $name = strtolower($name);
 
+                if (isset($_SESSION['name']) && !empty($_SESSION['name'])) {
+                    $response = array(
+                        'status' => 'error',
+                        'message' => 'You are already logged in'
+                    );
+                    header('Content-Type: application/json');
+                    die(json_encode($response));
+                }
+
                 // check if the maxUsers limit is reached
                 $result = $db->query('SELECT COUNT(*) AS count FROM users');
                 if ($count = $result->fetchArray(SQLITE3_ASSOC))
@@ -435,6 +444,20 @@ if (isset($_GET['action'])) {
 
         case 'getChat':
             // get chats and users
+
+            // if user requests too many times in a short time, timeout
+            // max 2 requests per 5 seconds
+            if (isset($_SESSION['lastRequest']) && $_SESSION['lastRequest'] > time() - 1) {
+                $_SESSION['lastRequest'] = time();
+                $response = array(
+                    'status' => 'error',
+                    'message' => 'Too many requests, wait a few seconds and then try again'
+                );
+                header('Content-Type: application/json');
+                die(json_encode($response));
+            }
+            $_SESSION['lastRequest'] = time();
+
             if (isset($_GET['focus']) && $_GET['focus'] == 'true') {
                 $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocused = 1 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
             } else {

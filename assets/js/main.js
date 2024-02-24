@@ -710,11 +710,6 @@ console.log('loading themes');
                     slogan: 'A spin on Solarized'
                 },
                 13: {
-                    name: 'Superhero',
-                    url: 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/superhero/bootstrap.min.css',
-                    slogan: 'The brave and the blue'
-                },
-                14: {
                     name: 'Yeti',
                     url: 'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/yeti/bootstrap.min.css',
                     slogan: 'A friendly foundation'
@@ -863,6 +858,9 @@ function runcommands(message) {
     } else if ($('#messageArea').val() == '!reload') {
         // clear the message area
         $('#messageArea').val('');
+        // clear all messages
+        $('#messages').html('');
+        window.lastMsgHash = 0;
         // reload the chat
         loadData();
         return true;
