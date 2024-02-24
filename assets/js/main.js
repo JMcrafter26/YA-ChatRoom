@@ -201,6 +201,9 @@ function loadData() {
                             spamClass = '';
                             spamClassData = false;
                         }
+
+
+
                     // if focus is false, and the user didn't read the message, add to unread
                     if (!focus && message.time > window.lastFocus && spamClassData == false) {
                         unread++;
@@ -209,6 +212,10 @@ function loadData() {
                     if ($('li[data-hash="' + message.hash + '"]').length > 0) {
                         return;
                     }
+
+                    if(message.spam == 1) {
+                        document.getElementById('spamCount').innerText = parseInt(document.getElementById('spamCount').innerText) + 1;
+                        }
 
                     // sanitize the data using DOMPurify
                     message.name = DOMPurify.sanitize(message.name);
@@ -265,7 +272,7 @@ function loadData() {
 
 
                         // console.log('spam: ' + message.message);
-                        document.getElementById('spamCount').innerText = parseInt(document.getElementById('spamCount').innerText) + 1;
+                        
 
                     var colorBadge = `<span class="badge" style="background-color: #${message.color};">#${message.color}</span>`;
 
@@ -976,16 +983,16 @@ $('#reloadCaptchaBtn').click(function() {
 });
 
 // on mobile, convert the member list to a modal
-function convertMemberList() {
-    // load data
-    loadData();
-}
+// function convertMemberList() {
+//     // load data
+//     loadData();
+// }
 
 
-// on window resize
-$(window).resize(function() {
-    convertMemberList();
-});
+// // on window resize
+// $(window).resize(function() {
+//     convertMemberList();
+// });
 
 // on focus
 $(window).focus(function() {
@@ -1031,6 +1038,6 @@ $(document).ready(function() {
     $('head').append('<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png">');
     }
 
-    convertMemberList();
+    // convertMemberList();
     updateActivity(true);
 });

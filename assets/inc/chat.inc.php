@@ -402,7 +402,8 @@ $error = array(
             // favicon.badge(10);
         </script>
 
-        <script src="./assets/js/main.min.obf.js"></script>
+        <!-- <script src="./assets/js/main.min.obf.js"></script> -->
+        <script src="./assets/js/main.js"></script>
 </body>
 
 </html>
