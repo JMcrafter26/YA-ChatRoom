@@ -1,1 +1,4 @@
 assets/inc/database.sqlite3
+dist/assets/inc/database.sqlite3
+src/assets/inc/database.sqlite3
+
