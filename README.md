@@ -68,7 +68,7 @@ The chatroom can be configured by editing the `config.php` file. The settings ar
 - Image support?
 - User mention
 - Web socket?
-- improve api security
+<!-- - improve api security -->
 
 ## License and credits
 
