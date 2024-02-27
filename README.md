@@ -33,10 +33,10 @@ This is a chatroom application that allows users to send messages to each other 
 
 ## Screenshots
 
-![Screenshot](./assets/theme-thumbnail/dark/default.png)
-![Screenshot](./assets/theme-thumbnail/light/flatly.png)
-![Screenshot](./assets/theme-thumbnail/dark/sketchy.png)
-For more screenshots, see the [theme-thumbnail](./assets/theme-thumbnail) folder.
+![Screenshot](./src/assets/theme-thumbnail/dark/default.png)
+![Screenshot](./src/assets/theme-thumbnail/light/flatly.png)
+![Screenshot](./src/assets/theme-thumbnail/dark/sketchy.png)
+For more screenshots, see the [theme-thumbnail](./src/assets/theme-thumbnail) folder.
 
 ## Demo
 
