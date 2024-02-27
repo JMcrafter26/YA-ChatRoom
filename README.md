@@ -55,6 +55,13 @@ Will be available soon.
 
 The chatroom can be configured by editing the `config.php` file. The settings are explained in the file itself.
 
+## TODO
+
+- Image support?
+- User mention
+- Web socket?
+- improve api security
+
 ## License and credits
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
