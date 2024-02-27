@@ -1,19 +1,25 @@
 # Yet Another Chatroom
 
-## Introduction
+![Banner](./src/assets/banner.png)
+
+<a href="https://github.com/JMcrafter26/yet-another-chatroom/releases" target="_blank"><img src="https://api.jm26.net/badge/beta?g&url=/github/v/release/JMcrafter26/yet-another-chatroom" height="20px" ></a>
+<a href="https://github.com/JMcrafter26/yet-another-chatroom/issues" target="_blank"><img src="https://api.jm26.net/badge/beta?g&url=/github/issues/JMcrafter26/yet-another-chatroom" height="20px" ></a>
+<a href=".LICENSE" target="_blank"><img src="https://api.jm26.net/badge/beta?g&url=/github/license/JMcrafter26/yet-another-chatroom" height="20px" ></a>
+
+<!-- Slogan: A simple, privacy friendly chatroom web application. -->
 
 This is a chatroom application that allows users to send messages to each other in real time. The application is built in plain HTML, CSS, and JavaScript, and uses PHP and SQLite for the backend.
 
 ## Table of contents
 
 - [Yet Another Chatroom](#yet-another-chatroom)
-  - [Introduction](#introduction)
   - [Table of contents](#table-of-contents)
   - [Features](#features)
   - [Screenshots](#screenshots)
   - [Demo](#demo)
   - [Installation](#installation)
   - [Configuration](#configuration)
+  - [TODO](#todo)
   - [License and credits](#license-and-credits)
   - [Contributing](#contributing)
   - [JM26.NET](#jm26net)

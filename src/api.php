@@ -162,7 +162,7 @@ if (isset($_GET['action'])) {
          * identification just as a name
          */
         case 'login':
-            if (isset($_GET['name']) && empty($_GET['name']) === false) {
+            if (isset($_GET['name']) && !empty($_GET['name'])) {
                 $i = 0;
                 $break = false;
                 $name = $_GET['name'];
@@ -170,6 +170,8 @@ if (isset($_GET['action'])) {
                 $name = htmlspecialchars($name);
                 // lowercase name
                 $name = strtolower($name);
+
+                // die($_SESSION['name']);
 
                 if (isset($_SESSION['name']) && !empty($_SESSION['name'])) {
                     $response = array(
@@ -193,6 +195,16 @@ if (isset($_GET['action'])) {
                     }
 
                 if(isset($config['captcha']) && $config['captcha'] == true) {
+
+                    if (!isset($_POST['token']) || empty($_POST['token'])) {
+                        $response = array(
+                            'status' => 'error',
+                            'message' => 'No captcha token provided, please try again',
+                            'errCode' => 'captcha-failed'
+                        );
+                        header('Content-Type: application/json');
+                        die(json_encode($response));
+                    }
 
                     require_once './assets/inc/vendor/autoload.php';
 
@@ -355,6 +367,14 @@ if (isset($_GET['action'])) {
                 header('Content-Type: application/json');
                 $db->close();
                 die(json_encode($response));
+            } else {
+                $response = array(
+                    'status' => 'error',
+                    'message' => 'Name cannot be empty'
+                );
+                header('Content-Type: application/json');
+                $db->close();
+                die(json_encode($response));
             }
             break;
 
@@ -447,16 +467,28 @@ if (isset($_GET['action'])) {
 
             // if user requests too many times in a short time, timeout
             // max 2 requests per 5 seconds
-            if (isset($_SESSION['lastRequest']) && $_SESSION['lastRequest'] > time() - 1) {
-                $_SESSION['lastRequest'] = time();
+
+            if (!isset($_SESSION['lastRequests'])) {
+                $_SESSION['lastRequests'] = array();
+            }
+            $_SESSION['lastRequests'][] = time();
+
+            
+            // delete requests older than 5 seconds
+            foreach ($_SESSION['lastRequests'] as $key => $value) {
+                if ($value < time() - 3) {
+                    unset($_SESSION['lastRequests'][$key]);
+                }
+            }
+
+            if (count($_SESSION['lastRequests']) > 3) {
                 $response = array(
                     'status' => 'error',
-                    'message' => 'Too many requests, wait a few seconds and then try again'
+                    'message' => 'Too many requests in a short time'
                 );
                 header('Content-Type: application/json');
                 die(json_encode($response));
             }
-            $_SESSION['lastRequest'] = time();
 
             if (isset($_GET['focus']) && $_GET['focus'] == 'true') {
                 $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocused = 1 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
@@ -559,7 +591,7 @@ if (isset($_GET['action'])) {
              * send message
              */
         case 'send':
-            if (isset($_SESSION['name']) && empty($_SESSION['name']) === false && isset($_POST['message']) && empty($_POST['message']) === false) {
+            if (isset($_SESSION['name']) && !empty($_SESSION['name']) && isset($_POST['message']) && !empty($_POST['message'])) {
                 $message = htmlspecialchars($_POST['message']);
                 // $message = $_GET['message'];
 
@@ -682,6 +714,29 @@ if (isset($_GET['action'])) {
                     );
                     header('Content-Type: application/json');
                     $db->close();
+                    die(json_encode($response));
+                }
+            } else {
+                if(!isset($_SESSION['name']) || empty($_SESSION['name'])) {
+                    $response = array(
+                        'status' => 'error',
+                        'message' => 'You are not logged in'
+                    );
+                    header('Content-Type: application/json');
+                    die(json_encode($response));
+                } else if(!isset($_POST['message']) || empty($_POST['message'])) {
+                    $response = array(
+                        'status' => 'error',
+                        'message' => 'Message cannot be empty'
+                    );
+                    header('Content-Type: application/json');
+                    die(json_encode($response));
+                } else {
+                    $response = array(
+                        'status' => 'error',
+                        'message' => 'Something went wrong'
+                    );
+                    header('Content-Type: application/json');
                     die(json_encode($response));
                 }
             }

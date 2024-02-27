@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         log('window.IC_settings not found. Setting default settings...');
         window.IC_settings = {
             general: {
-                endpoint: './assets/inc/captcha-request.php',
+                endpoint: './assets/iconcaptcha/captcha-request.php',
                 fontFamily: 'inherit',
             },
             security: {
@@ -112,13 +112,15 @@ document.addEventListener('DOMContentLoaded', function() {
          translation = JSON.parse(localStorage.getItem('iconCaptchaTranslation'));
 
          
-    log('translation: ' + translation);
 
     // initialize IconCaptcha
     IC_settings.locale = translation;
         $('.iconcaptcha-widget').iconCaptcha(IC_settings);
+    document.getElementById('iconCaptcha').setAttribute('data-loaded', 'true');
+
+
     } else {
-        log('Translation file not found in localStorage. Getting url: ' + 'https://api.jm26.net/icon-captcha/v1/assets/translations/' + userLangShort + '.json');
+        log('Translation file not found in localStorage. Getting url; ' + userLangShort + '.json');
     
     // get the translation file from the server
     $.getJSON('./assets/iconcaptcha/translations/get.php?lang=' + userLangShort).done(function (data) {
@@ -131,11 +133,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         
-    log('translation: ' + translation);
 
     // initialize IconCaptcha
     IC_settings.locale = translation;
         $('.iconcaptcha-widget').iconCaptcha(IC_settings);
+    document.getElementById('iconCaptcha').setAttribute('data-loaded', 'true');
+
+        
     }).fail(function () {
         // if the translation file is not found, initialize IconCaptcha with the default translation file
         log('Translation file for ' + userLangShort + '.json not found: ');

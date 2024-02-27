@@ -17,7 +17,7 @@ $config = array(
     'title' => 'Chatroom', // Title of the application
     'maxTimeout' => 360, // 360s = 6min, after 6min of inactivity the user is as good as gone and can be removed
     'maxMessageLength' => 1000,
-    'maxMessageAge' => 6000, // 60s = 1min, messages older than 1min will be removed
+    'maxMessageAge' => 60, // 60s = 1min, messages older than 1min will be removed
     'maxNameLength' => 20,
     'maxUsers' => 100,
     'fetchInterval' => 5000, // Fetch new messages every 5 seconds
@@ -48,4 +48,5 @@ $reservedNames = array(
     'null',
     'undefined',
     'unknown',
+    '0',
 );
