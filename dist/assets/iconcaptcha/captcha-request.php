@@ -1,7 +1,7 @@
 <?php
 
 // Include the captcha classes.
-require_once './vendor/autoload.php';
+require_once '../inc/vendor/autoload.php';
 
 use IconCaptcha\IconCaptcha;
 
@@ -12,7 +12,7 @@ try {
     session_start();
 
     // Load the IconCaptcha options.
-    $options = require 'captcha-config.php';
+    $options = require '../inc/captcha-config.php';
 
     // Create an instance of IconCaptcha.
     $captcha = new IconCaptcha($options);

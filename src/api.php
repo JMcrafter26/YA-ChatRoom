@@ -44,11 +44,11 @@ chmod($db_file, 0777);
 $db->busyTimeout(2500);
 
 // disable error reporting
-error_reporting(0);
-// disable xdebug
-ini_set('xdebug.default_enable', 0);
-// disable error display
-ini_set('display_errors', 0);
+// error_reporting(0);
+// // disable xdebug
+// ini_set('xdebug.default_enable', 0);
+// // disable error display
+// ini_set('display_errors', 0);
 
 
 /**
@@ -78,7 +78,7 @@ if (!isset($_SESSION['name']) && $_GET['action'] != 'login' && $_GET['action'] !
 }
 
 // check if user is in database and action is not login or logout
-$result = $db->query('SELECT COUNT(*) AS count FROM users WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
+$result = $db->query('SELECT COUNT(*) AS count FROM users WHERE name = "' . $db->escapeString($_SESSION['name'] ?? '') . '"');
 if ($count = $result->fetchArray(SQLITE3_ASSOC)) {
     if ($count['count'] < 1 && $_GET['action'] != 'login' && $_GET['action'] != 'logout') {
         // destroy session
@@ -93,21 +93,26 @@ if ($count = $result->fetchArray(SQLITE3_ASSOC)) {
     }
 }
 
-if($config['captcha'] == true && $config['filterSpam'] == true && isset($_SESSION['spamScore']) && $_SESSION['spamScore'] > 5) {
-    if(isset($_GET['action']) && $_GET['action'] == 'verify') {
+if ($config['captcha'] == true && $config['filterSpam'] == true && isset($_SESSION['spamScore']) && $_SESSION['spamScore'] > 5 && $_GET['action'] != 'logout') {
+
+    if (isset($_GET['action']) && $_GET['action'] == 'verify') {
         require_once './assets/inc/vendor/autoload.php';
 
         // Load the IconCaptcha options.
         $options = require 'assets/inc/captcha-config.php';
-    
+
         // Create an instance of IconCaptcha.
         $captcha = new \IconCaptcha\IconCaptcha($options);
-    
+
         // Validate the captcha.
         $validation = $captcha->validate($_POST);
-    
+
         // Confirm the captcha was validated.
         if ($validation->success()) {
+            if(!isset($_SESSION['verifiedSpamScore'])) {
+                $_SESSION['verifiedSpamScore'] = 0;
+            }
+            $_SESSION['verifiedSpamScore']++;
             $response = array(
                 'status' => 'success',
                 'message' => 'Captcha validation successful'
@@ -123,15 +128,28 @@ if($config['captcha'] == true && $config['filterSpam'] == true && isset($_SESSIO
             );
             header('Content-Type: application/json');
             die(json_encode($response));
-        } 
+        }
     }
-    $response = array(
+
+    
+    if ($_SESSION['verifiedSpamScore'] > 2) {
+        // $response = array(
+        //     'status' => 'error',
+        //     'errCode' => 'logout',
+        //     'message' => 'Access denied! You are sending too many spam messages. Log out and verify the captcha to continue'
+        // );
+        // header('Content-Type: application/json');
+        // die(json_encode($response));
+        $_GET['action'] = 'logout';
+    } else {    
+        $response = array(
         'status' => 'error',
         'errCode' => 'verify-captcha',
         'message' => 'You are sending too many spam messages. Please verify the captcha to continue'
     );
     header('Content-Type: application/json');
     die(json_encode($response));
+    }
 }
 
 
@@ -152,6 +170,7 @@ if (isset($_SESSION['name']) && isset($_SESSION['token'])) {
             die(json_encode($response));
         }
 }
+
 
 
 if (isset($_GET['action'])) {
@@ -194,7 +213,7 @@ if (isset($_GET['action'])) {
                         die(json_encode($response));
                     }
 
-                if(isset($config['captcha']) && $config['captcha'] == true) {
+                if (isset($config['captcha']) && $config['captcha'] == true) {
 
                     if (!isset($_POST['token']) || empty($_POST['token'])) {
                         $response = array(
@@ -379,16 +398,19 @@ if (isset($_GET['action'])) {
             break;
 
         case 'logout':
+            // die(json_encode($_SESSION));
             if (isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
+                
+                // delete from database
                 $db->exec('DELETE FROM users WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
                 session_destroy();
+
 
                 $response = array(
                     'status' => 'success',
                     'message' => 'User logged out successfully'
                 );
                 header('Content-Type: application/json');
-                $db->close();
                 die(json_encode($response));
             } else {
                 $response = array(
@@ -399,6 +421,7 @@ if (isset($_GET['action'])) {
                 $db->close();
                 die(json_encode($response));
             }
+            break;
 
 
 
@@ -473,7 +496,7 @@ if (isset($_GET['action'])) {
             }
             $_SESSION['lastRequests'][] = time();
 
-            
+
             // delete requests older than 5 seconds
             foreach ($_SESSION['lastRequests'] as $key => $value) {
                 if ($value < time() - 3) {
@@ -490,6 +513,8 @@ if (isset($_GET['action'])) {
                 die(json_encode($response));
             }
 
+            checkRequest();
+
             if (isset($_GET['focus']) && $_GET['focus'] == 'true') {
                 $db->exec('UPDATE users SET activity = strftime("%s", "now"), isFocused = 1 WHERE name = "' . $db->escapeString($_SESSION['name']) . '"');
             } else {
@@ -501,28 +526,28 @@ if (isset($_GET['action'])) {
 
             $result = $db->query('SELECT id, name, countryCode, activity, isFocused, color FROM users ORDER BY activity DESC');
             while ($user = $result->fetchArray(SQLITE3_ASSOC)) {
-                                    // if (user.isFocused) {
-                    //     if (user.activity < (Math.floor(Date.now() / 1000) - 90)) {
-                    //         status = 'offline';
-                    //     } else {
-                    //         status = 'online';
-                    //     }
-                    // } else {
-                    //     // if user is longer than 90 seconds inactive, he is offline, else he is busy
-                    //     if (user.activity < (Math.floor(Date.now() / 1000) - 90)) {
-                    //         status = 'offline';
-                    //     } else {
-                    //         status = 'busy';
-                    //     }
-                    // }
-                if($user['isFocused'] == true) {
-                    if($user['activity'] < (time() - 90)) {
+                // if (user.isFocused) {
+                //     if (user.activity < (Math.floor(Date.now() / 1000) - 90)) {
+                //         status = 'offline';
+                //     } else {
+                //         status = 'online';
+                //     }
+                // } else {
+                //     // if user is longer than 90 seconds inactive, he is offline, else he is busy
+                //     if (user.activity < (Math.floor(Date.now() / 1000) - 90)) {
+                //         status = 'offline';
+                //     } else {
+                //         status = 'busy';
+                //     }
+                // }
+                if ($user['isFocused'] == true) {
+                    if ($user['activity'] < (time() - 90)) {
                         $user['status'] = 'offline';
                     } else {
                         $user['status'] = 'online';
                     }
                 } else {
-                    if($user['activity'] < (time() - 90)) {
+                    if ($user['activity'] < (time() - 90)) {
                         $user['status'] = 'offline';
                     } else {
                         $user['status'] = 'busy';
@@ -538,29 +563,29 @@ if (isset($_GET['action'])) {
 
             $chats = array();
             $db->exec('DELETE FROM chats WHERE strftime("%s", "now") - time > ' . $config['maxMessageAge']);
-            if(isset($_GET['lastHash']) && !empty($_GET['lastHash']) && $_GET['lastHash'] != 0) {
+            if (isset($_GET['lastHash']) && !empty($_GET['lastHash']) && $_GET['lastHash'] != 0) {
                 // get the id of the chat with the last hash, if it exists
                 $result = $db->query('SELECT id FROM chats WHERE hash = "' . $db->escapeString($lastHash) . '"');
                 $lastId = $result->fetchArray(SQLITE3_ASSOC);
-                if($lastId == false) {
+                if ($lastId == false) {
                     $lastId = 0;
                 } else {
-                $lastId = $lastId['id'];
+                    $lastId = $lastId['id'];
                 }
             }
 
             // die(json_encode($lastId));
-            
+
             $resultChats = $db->query('SELECT name, message, time, spam, hash FROM chats WHERE id > ' . $db->escapeString($lastId) . ' ORDER BY time');
             while ($chat = $resultChats->fetchArray(SQLITE3_ASSOC)) {
-                
+
                 // echo $chat['name'];
                 $chats[] = $chat;
             }
 
 
 
-                // die(json_encode($chats));
+            // die(json_encode($chats));
 
             // for each chat, generate a hash out of it 
             // foreach ($chats as $key => $chat) {
@@ -594,6 +619,8 @@ if (isset($_GET['action'])) {
             if (isset($_SESSION['name']) && !empty($_SESSION['name']) && isset($_POST['message']) && !empty($_POST['message'])) {
                 $message = htmlspecialchars($_POST['message']);
                 // $message = $_GET['message'];
+
+                checkRequest();
 
                 // check if message is empty
                 if (empty($message)) {
@@ -668,8 +695,8 @@ if (isset($_GET['action'])) {
                 // Search in all available blacklists
                 $filter = new SpamFilter();
 
-                $result = $filter->check_text_and_blacklist($message);
-                if ($result) {
+                $spamListResult = $filter->check_text_and_blacklist($message);
+                if ($spamListResult) {
                     $spam = 1;
                     // $response = array(
                     //     'status' => 'error',
@@ -678,7 +705,7 @@ if (isset($_GET['action'])) {
                     // );
                     // header('Content-Type: application/json');
                     // die(json_encode($response));
-                    if(!isset($_SESSION['spamScore'])) {
+                    if (!isset($_SESSION['spamScore'])) {
                         $_SESSION['spamScore'] = 0;
                     }
                     $_SESSION['spamScore'] = $_SESSION['spamScore'] + 1;
@@ -687,6 +714,28 @@ if (isset($_GET['action'])) {
                 }
 
                 $message = str_replace(array_keys($replacements), array_values($replacements), $message);
+
+                // check if the last x messages of the user were the exact same
+                $maxEqualMessages = 5;
+                $result = $db->query('SELECT message FROM chats WHERE name = "' . $db->escapeString($_SESSION['name']) . '" ORDER BY time DESC LIMIT ' . $maxEqualMessages - 1);
+                $messages = array();
+                while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+                    $messages[] = $row['message'];
+                }
+                $messages[] = $message;
+                // if there are more than 3 messages and all of them are the same, set spam to 1
+                if (count($messages) == $maxEqualMessages && count(array_unique($messages)) == 1) {
+                    $response = array(
+                        'status' => 'error',
+                        'errCode' => 'sameMessage',
+                        'message' => 'You are sending the same message too many times',
+                        'data' => array(
+                            'message' => $message
+                        )
+                    );
+                    header('Content-Type: application/json');
+                    die(json_encode($response));
+                }
 
                 $hash = md5($_SESSION['name'] . $message . time());
 
@@ -709,7 +758,7 @@ if (isset($_GET['action'])) {
                         // if spam is 1 set it to true, else set it to false
                         'data' => array(
                             'spam' => $spam == 1 ? true : false,
-                            'spam_category' => $result[1] ?? null
+                            'spam_category' => $spamListResult[1] ?? null
                         )
                     );
                     header('Content-Type: application/json');
@@ -717,14 +766,14 @@ if (isset($_GET['action'])) {
                     die(json_encode($response));
                 }
             } else {
-                if(!isset($_SESSION['name']) || empty($_SESSION['name'])) {
+                if (!isset($_SESSION['name']) || empty($_SESSION['name'])) {
                     $response = array(
                         'status' => 'error',
                         'message' => 'You are not logged in'
                     );
                     header('Content-Type: application/json');
                     die(json_encode($response));
-                } else if(!isset($_POST['message']) || empty($_POST['message'])) {
+                } else if (!isset($_POST['message']) || empty($_POST['message'])) {
                     $response = array(
                         'status' => 'error',
                         'message' => 'Message cannot be empty'
@@ -769,3 +818,26 @@ if (isset($_GET['action'])) {
  */
 $db->close();
 exit;
+
+function checkRequest() {
+                // check if request is from ajax or xhr
+                if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+                    $response = array(
+                        'status' => 'error',
+                        'message' => 'Invalid request'
+                    );
+                    header('Content-Type: application/json');
+                    die(json_encode($response));
+                }
+
+                // check if $_SESSION['randomToken'] is POST/GET token
+                if (!isset($_GET['token']) || $_SESSION['randomToken'] != $_GET['token']) {
+                    $response = array(
+                        'status' => 'error',
+                        'errCode' => 'invalid-token',
+                        'message' => 'Invalid token'
+                    );
+                    header('Content-Type: application/json');
+                    die(json_encode($response));
+                }
+}

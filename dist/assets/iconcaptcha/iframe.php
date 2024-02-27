@@ -66,8 +66,19 @@
 </head>
 
 <body>
+    <div id="spinner" style="height: 100vh" class="d-none">
+        <div class="d-flex justify-content-center" style="height: 20vh">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <!-- at the bottom of the spinner, show a message -->
+        <div class="d-flex justify-content-center m-3">
+            <p class="text-muted">If you have issues with the captcha, delete your browser cache and try again</p>
+        </div>
+    </div>
 
-    <div class="container" style="height: 100vh">
+    <div class="container d-block" style="height: 100vh" id="container">
 
         <?php
         session_start();
@@ -92,7 +103,7 @@
             <?= \IconCaptcha\Token\IconCaptchaToken::render() ?>
 
             <!-- The IconCaptcha will be rendered in this element - REQUIRED -->
-            <div class="iconcaptcha-widget" id="iconCaptcha" data-theme="dark" data-langVersion="1.1"></div>
+            <div class="iconcaptcha-widget" id="iconCaptcha" data-theme="dark" data-langVersion="1.1"  data-loaded="false"></div>
         </form>
         <div role="alert" id="success" class="alert alert-success" style="display: none;"></div>
         <div role="alert" id="error" class="alert alert-danger" style="display: none;"></div>
@@ -105,7 +116,7 @@
     <script>
         window.IC_settings = {
             general: {
-                endpoint: '../inc/captcha-request.php',
+                endpoint: './captcha-request.php',
                 fontFamily: 'inherit',
             },
             security: {
@@ -131,6 +142,29 @@
         window.addEventListener('resize', resizeIframe);
         resizeIframe();
 
+        // if it takes longer than 3 seconds to load the page, show the spinner
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                // check if page has loaded and captcha is visible
+                if (document.readyState === 'complete' && document.getElementById('iconCaptcha').getAttribute('data-loaded') == 'true') {
+                    return;
+                }
+                $('#spinner').removeClass('d-none');
+                $('#spinner').addClass('d-block');
+                $('#container').removeClass('d-block');
+                $('#container').addClass('d-none');
+            }, 2500);
+        });
+
+        // event, if data-loaded is changed to true
+        document.getElementById('iconCaptcha').addEventListener('change', function() {
+            if (document.getElementById('iconCaptcha').getAttribute('data-loaded') == 'true') {
+                $('#spinner').removeClass('d-block');
+                $('#spinner').addClass('d-none');
+                $('#container').removeClass('d-none');
+                $('#container').addClass('d-block');
+            }
+        });
 
         function sendCaptcha() {
             var form = $('#iconCaptchaDiv');
@@ -162,12 +196,25 @@
             });
         }
 
+
         $(document).ready(function() {
+
+            // // disable the spinner timeout
+
+            // // show the container
+            // $('#spinner').removeClass('d-block');
+            // $('#spinner').addClass('d-none');
+            // $('#container').removeClass('d-none');
+
+
+            IconCaptcha.bind('error', function(e) {
+                $('#error').html('An error occurred');
+                $('#error').show();
+            });
+
             IconCaptcha.bind('success', function(e) {
 
                 sendCaptcha();
             });
         });
-
-
     </script>

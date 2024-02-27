@@ -6,7 +6,7 @@ function logOut() {
         type: 'GET',
         data: {
             action: 'logout',
-            token: window.config.token
+            token: window.config.ctoken
         },
         success: function(data) {
             if (data.status == 'success') {
@@ -495,7 +495,7 @@ function verifyCaptcha() {
         return;
     }
     // create a modal with an iframe to the captcha page
-    $('#iconCaptchaIframe').attr('src', './assets/iconcaptcha/iframe.php?token=' + window.config.token + '&r=' + Math.floor(Math.random() * 1000));
+    $('#iconCaptchaIframe').attr('src', './assets/iconcaptcha/iframe.php?token=' + window.config.ctoken + '&r=' + Math.floor(Math.random() * 1000));
     $('#captchaModal').modal('show');
 }
 

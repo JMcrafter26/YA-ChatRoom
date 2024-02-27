@@ -57,6 +57,8 @@ Will be available soon.
 3. Open the chatroom in your web browser
 4. Customize in config.php and enjoy! 🎉
 
+**IMPORTANT**: Set the folder permissions of `./assets/inc/` to 770 to prevent unauthorized access to the database and other essential files.
+
 ## Configuration
 
 The chatroom can be configured by editing the `config.php` file. The settings are explained in the file itself.

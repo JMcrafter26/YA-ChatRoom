@@ -72,7 +72,8 @@ $error = array(
         initTheme();
 
         window.config = {
-            token: '<?php echo $_SESSION['token']; ?>',
+            token: '<?php echo $_SESSION['randomToken']; ?>',
+            ctoken: '<?php echo $_SESSION['token']; ?>',
             name: '<?php echo $_SESSION['name']; ?>',
             title: '<?php echo $config['title']; ?>',
             fetchInterval: <?php echo $config['fetchInterval']; ?>,
