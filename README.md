@@ -10,6 +10,8 @@
 
 This is a chatroom application that allows users to send messages to each other in real time. The application is built in plain HTML, CSS, and JavaScript, and uses PHP and SQLite for the backend.
 
+[![wakatime](https://wakatime.com/badge/github/JMcrafter26/YA-ChatRoom.svg)](https://wakatime.com/badge/github/JMcrafter26/YA-ChatRoom)
+
 ## Table of contents
 
 - [Yet Another Chatroom](#yet-another-chatroom)
