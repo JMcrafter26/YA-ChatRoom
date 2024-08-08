@@ -88,4 +88,4 @@ Feel free to contribute to this project by creating a pull request. If you have 
 
 ## JM26.NET
 
-This project is made by [JMcrafter26](https://jm26.net). Refer to the [TEST.JM26.NET](https://test.jm26.net) for more information and other projects.
+This project is made by [JMcrafter26](https://jm26.net). Refer to [TEST.JM26.NET](https://test.jm26.net) for more information and other projects.
