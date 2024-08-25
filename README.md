@@ -2,9 +2,9 @@
 
 ![Banner](./src/assets/banner.png)
 
-<a href="https://github.com/JMcrafter26/yet-another-chatroom/releases" target="_blank"><img src="https://api.jm26.net/badge/beta?g&url=/github/v/release/JMcrafter26/yet-another-chatroom" height="20px" ></a>
-<a href="https://github.com/JMcrafter26/yet-another-chatroom/issues" target="_blank"><img src="https://api.jm26.net/badge/beta?g&url=/github/issues/JMcrafter26/yet-another-chatroom" height="20px" ></a>
-<a href=".LICENSE" target="_blank"><img src="https://api.jm26.net/badge/beta?g&url=/github/license/JMcrafter26/yet-another-chatroom" height="20px" ></a>
+<a href="https://github.com/JMcrafter26/YA-ChatRoom/releases" target="_blank"><img src="https://api.jm26.net/badge/beta?g&url=/github/v/release/JMcrafter26/YA-ChatRoom" height="20px" ></a>
+<a href="https://github.com/JMcrafter26/yet-another-chatroom/issues" target="_blank"><img src="https://api.jm26.net/badge/beta?g&url=/github/issues/JMcrafter26/YA-ChatRoom" height="20px" ></a>
+<a href=".LICENSE" target="_blank"><img src="https://api.jm26.net/badge/beta?g&url=/github/license/JMcrafter26/YA-ChatRoom" height="20px" ></a>
 
 <!-- Slogan: A simple, privacy friendly chatroom web application. -->
 
